@@ -1,3 +1,4 @@
+from django.shortcuts import render, HttpResponse, redirect
 from.models import Books, Genres
 from random import randint
 

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class Genres(models.Model):
     name = models.CharField(max_length=255)
@@ -19,7 +20,11 @@ class Books(models.Model):
     author = models.CharField(max_length=255)
     copies = models.IntegerField()
     cod = models.IntegerField(unique=True)
-
+    date_register = models.DateTimeField(default=datetime.now)
+    borrowed = models.BooleanField(default=False)
+    loan_date = models.DateTimeField(blank=True, null=True) 
+    return_date = models.DateTimeField(blank=True, null=True) 
+    
     def __str__(self):
         return self.name
     
