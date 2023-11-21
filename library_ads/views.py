@@ -1,4 +1,4 @@
-from django.from .models import Books, Genres
+from.models import Books, Genres
 from random import randint
 
 def index (request):
