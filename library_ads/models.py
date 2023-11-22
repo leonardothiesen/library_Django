@@ -16,7 +16,7 @@ class Books(models.Model):
     name = models.CharField(max_length=255)
     genre = models.ForeignKey(Genres, on_delete=models.CASCADE) 
     pages = models.IntegerField()
-    cover = models.ImageField(blank=False)
+    cover = models.ImageField()
     author = models.CharField(max_length=255)
     copies = models.IntegerField()
     cod = models.IntegerField(unique=True)
