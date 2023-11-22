@@ -25,6 +25,8 @@
                 <th>Gênero</th>
                 <th>Páginas</th>
                 <th>Autor</th>
+                <th>Emprestado</th>
+
             </tr>
         </thead>
         <tbody>
@@ -35,6 +37,7 @@
                     <td>{{ book.genre }}</td>
                     <td>{{ book.pages }}</td>
                     <td>{{ book.author }}</td>
+                    <td>{{ book.borrowed }}</td>
                 </tr>
             {% endfor %}
         </tbody>
