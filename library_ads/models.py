@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 
 class Genres(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -13,7 +13,7 @@ class Genres(models.Model):
 
 class Books(models.Model):
     
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
     genre = models.ForeignKey(Genres, on_delete=models.CASCADE) 
     pages = models.IntegerField()
     cover = models.ImageField()

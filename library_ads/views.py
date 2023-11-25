@@ -15,8 +15,8 @@ def book_detail(request, id):
 def add_book(request):
     if request.method == 'POST':
         name = request.POST.get('name')
-        # name = request.POST['name']
-        genre = request.POST.get('genre')
+        genre_id = request.POST.get('genre')
+        genre_instance = Genres.objects.get(pk=genre_id)
         pages = request.POST.get('pages')
         cover = request.FILES.get('cover')
         author = request.POST.get('author')
@@ -24,7 +24,7 @@ def add_book(request):
         cod = randint(100, 10000)
 
         Books.objects.create(
-            name=name, genre=genre, pages=pages, cover=cover,
+            name=name, genre=genre_instance, pages=pages, cover=cover,
             author=author, copies=copies, cod=cod 
         )
 
