@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from.models import Books, Genres
 from random import randint
 
@@ -6,10 +6,9 @@ def index (request):
     books = Books.objects.all()
     return render(request, 'pages/index.html', {'books': books})
 
-def book_detail(request, id):
-    book = Books.objects.get(id=id)
-    return render(request, 'pages/book_detail.html', {'book':book})
-
+def book_detail(request, book_id):
+    book = get_object_or_404(Books, pk=book_id)
+    return render(request, 'pages/book_detail.html', {'book': book})
 
 
 def add_book(request):
