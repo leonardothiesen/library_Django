@@ -25,7 +25,8 @@ class Books(models.Model):
     borrowed = models.BooleanField(default=False)
     loan_date = models.DateTimeField(blank=True, null=True) 
     return_date = models.DateTimeField(blank=True, null=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, default=1)
+
     
     def __str__(self):
         return self.name
