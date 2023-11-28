@@ -1,20 +1,55 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
-    
+
     <title>Cadastro de usuário</title>
 
 </head>
+
 <body>
 
     <div class="container">
         <br>
+
+        {% if status == '0' %}
+        <div class="alert alert-success" role="alert">
+            Cadastro realizado com sucesso
+        </div>
+        {% endif %}
+
+        {% if status == '1' %}
+        <div class="alert alert-danger" role="alert">
+            Nome e e-mail não podem estar vazios
+        </div>
+        {% endif %}
+
+        {% if status == '2' %}
+        <div class="alert alert-danger" role="alert">
+            A senha precisa ter no mínimo 4 caracteres
+        </div>
+        {% endif %}
+
+        {% if status == '3' %}
+        <div class="alert alert-danger" role="alert">
+            Usuário já existente
+        </div>
+        {% endif %}
+
+        {% if status == '4' %}
+        <div class="alert alert-danger" role="alert">
+            Erro de sistema
+        </div>
+        {% endif %}
+
+
         <div class="row">
 
             <div class="col-md-3">
@@ -34,24 +69,15 @@
                     <br>
                     <label>Senha</label>
                     <input name="senha_usuario" class="form-control" type="password" placeholder="Senha">
-
-                    <style>
-                        .custom-button {
-                            margin-top: 10px;
-                        }
-                    </style>
+                    <br>
                     <input class="btn btn-danger btn-lg custom-button" type="submit" value="Cadastrar">
+                    <a href="{% url 'login' %}" class="btn btn-warning btn-lg">Login</a>
                 </form>
             </div>
-
             <div class="col-md-3">
             </div>
-
-
         </div>
-
-
     </div>
-
 </body>
+
 </html>

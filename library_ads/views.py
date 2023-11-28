@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from.models import Books, Genres
 from random import randint
+from usuarios.models import Usuario
 
 def index (request):
     books = Books.objects.all()
@@ -32,6 +33,13 @@ def add_book(request):
     else:
         genres = Genres.objects.all()
         return render(request, 'pages/add-book.html', {'genres':genres})
+
+def home_usuario(request):
+    if request.session.get('usuario'):
+        usuario = Usuario.objects.get(id = request.session['usuario']).nome_usuario
+        return HttpResponse(f'ola {usuario}')
+    else:
+        return redirect ('/login/?status=2')
 
 
 

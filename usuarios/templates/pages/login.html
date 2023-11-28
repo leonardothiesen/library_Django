@@ -13,6 +13,44 @@
 </head>
 <body>
 
+    <div class="container">
+        <br>
+        {% if status == '1' %}
+        <div class="alert alert-danger" role="alert">
+            Email ou senha inválidos
+        </div>
+        {% endif %}
 
+        {% if status == '2' %}
+        <div class="alert alert-danger" role="alert">
+            Faça o login
+        </div>
+        {% endif %}
+
+        <div class="row">
+
+            <div class="col-md-3">
+            </div>
+
+            <div class="col-md">
+                <h1>Login</h1>
+                <hr>
+
+                <form method="POST" action="{% url 'valida_login' %}">{% csrf_token %}
+
+                    <label>Email</label>
+                    <input name="email_usuario" class="form-control" type="text" placeholder="Email">
+                    <br>
+                    <label>Senha</label>
+                    <input name="senha_usuario" class="form-control" type="password" placeholder="Senha">
+                    <br>
+                    <input class="btn btn-danger btn-lg custom-button" type="submit" value="Enviar">
+                    <a href="{% url 'cadastro' %}" class="btn btn-warning btn-lg">Cadastre-se</a>
+                </form>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
