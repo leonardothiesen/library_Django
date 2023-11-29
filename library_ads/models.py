@@ -14,18 +14,18 @@ class Genres(models.Model):
 
 class Books(models.Model):
     
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     genre = models.ForeignKey(Genres, on_delete=models.CASCADE) 
     pages = models.IntegerField()
     cover = models.ImageField(blank=True)
     author = models.CharField(max_length=255)
     copies = models.IntegerField()
-    cod = models.AutoField(primary_key=True)
+    cod = models.IntegerField(unique=True)
     date_register = models.DateTimeField(default=datetime.now)
     borrowed = models.BooleanField(default=False)
     loan_date = models.DateTimeField(blank=True, null=True) 
     return_date = models.DateTimeField(blank=True, null=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, default=1)
+
 
     
     def __str__(self):

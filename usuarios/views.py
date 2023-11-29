@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Usuario
 from django.shortcuts import redirect
 from hashlib import sha256
+from library_ads.views import index
 
 def login (request):
     status = request.GET.get('status')
@@ -51,9 +52,10 @@ def valida_login(request):
 
     if len (usuario) == 0:
         return redirect('/login/?status=1')
-    elif len(usuario) > 0:
-        request.session['usuario'] = usuario[0].id
-        return redirect('home-usuario')
+
+    request.session['usuario'] = usuario[0].id
+    return index(request) 
+
 
 def logout(request):
     request.session.flush()
