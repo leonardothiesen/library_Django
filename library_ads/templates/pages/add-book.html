@@ -9,12 +9,43 @@
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
     
     <title>Add-book</title>
+    <style>
+        form {
+            max-width: 300px;
+            margin: auto;
+        }
+
+        input, select {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%; /* Preenche a largura do contêiner */
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo específico para o botão "Salvar" */
+        .btn-salvar {
+            background-color: blue;
+            color: white;
+        }
+
+        /* Estilo específico para o botão "Home" */
+        .btn-home {
+            background-color: yellow;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
-    <form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
         <h1>Adicionar livro</h1>
-        <input type="text" name="name" placeholder="nome">
+        <input type="text" name="name" placeholder="Nome">
         <select name="genre" id="">
             {% for genre in genres %}
             <option value="{{genre.id}}">{{ genre.name }}</option>
@@ -24,9 +55,13 @@
         <input type="file" name="cover" placeholder="Capa">
         <input type="text" name="author" placeholder="Autor">
         <input type="text" name="copies" placeholder="Exemplares">
-        <button type="submit" class="btn btn-success mt-2">Salvar</button>
+        <div class="button-container">
+            <input class="btn btn-danger btn-lg custom-button" type="submit" value="Salvar">
+            <a href="{% url 'home' %}" class="btn btn-warning btn-lg">Home</a>
+        </div>
 
+        
     </form>
-    <a href="{% url 'home' %}" class=" btn btn-primary mt-5 mb-1"> home</a>
+    
 </body>
 </html>

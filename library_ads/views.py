@@ -3,13 +3,15 @@ from.models import Books, Genres
 from random import randint
 from usuarios.models import Usuario
 
+
 def index (request):
     books = Books.objects.all()
     return render(request, 'pages/index.html', {'books': books})
 
 
-def book_detail(request, book_id):
-    book = Books.objects.get(id=book_id)
+def book_detail(request, id):
+    print(f"{id}")
+    book = Books.objects.get(id=id)
     return render(request, 'pages/book_detail.html', {'book': book})
 
 
@@ -22,7 +24,7 @@ def add_book(request):
         cover = request.FILES.get('cover')
         author = request.POST.get('author')
         copies = request.POST.get('copies')
-        cod = randint(100, 10000)
+        cod = randint(100, 10000) 
 
         Books.objects.create(
             name=name, genre=genre_instance, pages=pages, cover=cover,
@@ -46,6 +48,7 @@ def search_book (request):
     q = request.GET.get('q')
     books = Books.objects.filter(name__icontains=q)
     return render(request, 'pages/index.html', {'books':books})
+
 
 # def delete_book(request, id):
 #     book = Books.objects.get(id=id)
