@@ -49,45 +49,32 @@ def search_book (request):
     return render(request, 'pages/index.html', {'books':books})
 
 
-def burrow_book(request, id):
-    book = Books.objects.get(id=id)
 
+def burrow_book(request, book_id):
     if request.method == 'POST':
-        form = BorrowBookForm(request.POST)
-        if form.is_valid():
-            borrow_quantity = form.cleaned_data['borrow_quantity']
+        book = Books.objects.get(pk=book_id)
+        borrow_quantity = int(request.POST.get('borrow_quantity', 0))
 
-            if 1 <= borrow_quantity <= book.stock:
-                book.stock -= borrow_quantity
-                book.borrowed += borrow_quantity
-                book.save()
+        if borrow_quantity > 0:
+            book.borrow(borrow_quantity)
+            return redirect('book_detail', book_id=book_id)
+        else:
+            # Aqui você pode adicionar lógica para lidar com quantidades inválidas, se necessário
+            return HttpResponse("Quantidade inválida")
 
-                return redirect('home')
-
-    else:
-        form = BorrowBookForm()
-
-    return redirect('home')
+    return HttpResponse("Método não permitido")
 
 def return_book(request, id):
     book = Books.objects.get(id=id)
+    return_quantity = int(request.POST.get('return_quantity', 1))
 
-    if request.method == 'POST':
-        form = ReturnBookForm(request.POST)
-        if form.is_valid():
-            return_quantity = form.cleaned_data['return_quantity']
-
-            if 1 <= return_quantity <= book.borrowed:
-                book.stock += return_quantity
-                book.borrowed -= return_quantity
-                book.save()
-
-                return redirect('home')
-
+    # Verifique se a quantidade para devolução é válida
+    if 1 <= return_quantity <= book.borrowed:
+        book.return_book(return_quantity)
+        return redirect('home')
     else:
-        form = ReturnBookForm()
-
-    return redirect('home')
+        # Lógica para lidar com entrada inválida (pode adicionar uma mensagem de erro)
+        pass
 
 
 

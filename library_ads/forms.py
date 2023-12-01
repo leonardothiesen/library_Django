@@ -5,3 +5,5 @@ class BorrowBookForm(forms.Form):
 
 class ReturnBookForm(forms.Form):
     return_quantity = forms.IntegerField(min_value=1, label='Quantidade para Devolução')
+
+    
