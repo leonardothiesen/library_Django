@@ -49,7 +49,7 @@
                 <td>
                     {% if book.borrowed %}
                         Não
-                    {% elif book.copies > 0 %}
+                    {% elif book.stock > 0 %}
                         Sim
                     {% else %}
                         Não

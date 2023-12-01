@@ -2,18 +2,17 @@ from django.shortcuts import render, HttpResponse, redirect
 from.models import Books, Genres
 from random import randint
 from usuarios.models import Usuario
+from .forms import BorrowBookForm, ReturnBookForm
 
 
 def index (request):
     books = Books.objects.all()
     return render(request, 'pages/index.html', {'books': books})
 
-
 def book_detail(request, id):
     print(f"{id}")
     book = Books.objects.get(id=id)
     return render(request, 'pages/book_detail.html', {'book': book})
-
 
 def add_book(request):
     if request.method == 'POST':
@@ -23,12 +22,12 @@ def add_book(request):
         pages = request.POST.get('pages')
         cover = request.FILES.get('cover')
         author = request.POST.get('author')
-        copies = request.POST.get('copies')
+        stock = request.POST.get('stock')
         cod = randint(100, 10000) 
 
         Books.objects.create(
             name=name, genre=genre_instance, pages=pages, cover=cover,
-            author=author, copies=copies, cod=cod 
+            author=author, stock=stock, cod=cod 
         )
 
         return redirect('home')
@@ -50,9 +49,54 @@ def search_book (request):
     return render(request, 'pages/index.html', {'books':books})
 
 
-# def delete_book(request, id):
+def burrow_book(request, id):
+    book = Books.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = BorrowBookForm(request.POST)
+        if form.is_valid():
+            borrow_quantity = form.cleaned_data['borrow_quantity']
+
+            if 1 <= borrow_quantity <= book.stock:
+                book.stock -= borrow_quantity
+                book.borrowed += borrow_quantity
+                book.save()
+
+                return redirect('home')
+
+    else:
+        form = BorrowBookForm()
+
+    return redirect('home')
+
+def return_book(request, id):
+    book = Books.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = ReturnBookForm(request.POST)
+        if form.is_valid():
+            return_quantity = form.cleaned_data['return_quantity']
+
+            if 1 <= return_quantity <= book.borrowed:
+                book.stock += return_quantity
+                book.borrowed -= return_quantity
+                book.save()
+
+                return redirect('home')
+
+    else:
+        form = ReturnBookForm()
+
+    return redirect('home')
+
+
+
+
+
+
+# def burrow_book(request, id):
 #     book = Books.objects.get(id=id)
-#     book.delete()
+#     book.burrow()
 #     return redirect('home')
 
 # def loan_book(request, id):

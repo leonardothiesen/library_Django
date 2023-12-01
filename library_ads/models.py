@@ -12,25 +12,40 @@ class Genres(models.Model):
         verbose_name = 'Genre'
         verbose_name_plural = 'Genres'
 
+from django.db import models
+from datetime import datetime
+
 class Books(models.Model):
-    
     name = models.CharField(max_length=255)
-    genre = models.ForeignKey(Genres, on_delete=models.CASCADE) 
+    genre = models.ForeignKey(Genres, on_delete=models.CASCADE)
     pages = models.IntegerField()
     cover = models.ImageField(blank=True)
     author = models.CharField(max_length=255)
-    copies = models.IntegerField()
     cod = models.IntegerField(unique=True)
     date_register = models.DateTimeField(default=datetime.now)
+    stock = models.IntegerField()
     borrowed = models.BooleanField(default=False)
-    loan_date = models.DateTimeField(blank=True, null=True) 
+    loan_date = models.DateTimeField(blank=True, null=True)
     return_date = models.DateTimeField(blank=True, null=True)
 
 
-    
+ 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name = 'Book'
         verbose_name_plural = 'Books'
+
+    def burrow(self, quantity=1):
+        if self.stock >= quantity:
+            self.stock -= quantity
+            self.borrowed += quantity
+            self.save()
+
+class Borrow(models.Model):
+    book = models.ForeignKey(Books, on_delete=models.CASCADE)
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.nome_usuario} emprestou {self.book.name}'

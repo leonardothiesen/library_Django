@@ -15,7 +15,7 @@
 
     <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-            <a class="navbar-brand mx-auto" href="{% url 'home' %}" style="color: red;">Voltar para home</a>
+            <button class="navbar-brand mx-auto" onclick="window.location.href='{% url 'home' %}'">Voltar para home</button>
         </nav>
     </div>
 
@@ -23,8 +23,10 @@
     <p>ID do Livro: {{ book.id }}</p>
 
     <div>
-        <img src="{{ book.cover.url }}" alt="Capa do Livro">
+        <img src="{{ book.cover.url }}" alt="Capa do Livro" style="max-width: 25%; height: auto;">
     </div>
+
+    <br>
 
     <table style="margin: auto; border-collapse: collapse; width: 80%; border: 2px solid black;">
         <tbody>
@@ -42,7 +44,7 @@
             </tr>
             <tr>
                 <td>Qtde exemplares</td>
-                <td>{{ book.copies }}</td>
+                <td>{{ book.stock }}</td>
             </tr>
             <tr>
                 <td>Data de Registro</td>
@@ -52,29 +54,36 @@
                 <td>Disponível</td>
                 <td>{% if book.borrowed %}Não{% else %}Sim{% endif %}</td>
             </tr>
-            <tr>
-                <td>Data de Empréstimo</td>
-                <td>{{ book.loan_date }}</td>
-            </tr>
-            <tr>
-                <td>Data de Devolução</td>
-                <td>{{ book.return_date }}</td>
-            </tr>
+
         </tbody>
     </table>
 
-     <!-- Seção de Empréstimo e Devolução -->
-     <form method="POST" action="{% url 'book-detail' book.id %}">
-        {% csrf_token %}
-        {% if not book.borrowed %}
-            <button type="submit" name="borrow">Empréstimo</button>
-        {% elif book.borrowed %}
-            <button type="submit" name="return">Devolução</button>
-        {% endif %}
-    </form>
+    <br>
 
-    <h3>Quantidade Disponível: {{ book.stock }}</h3>
+
+
+<!-- Adicione o formulário para empréstimo -->
+<form method="post" action="{% url 'burrow-book' book.id %}">
+    {% csrf_token %}
+    <label for="borrow_quantity">Quantidade para Empréstimo:</label>
+    <input type="number" name="borrow_quantity" id="borrow_quantity" min="1" max="{{ book.stock }}" required>
+    <button type="submit">Emprestar</button>
+</form>
+
+<!-- Adicione o formulário para devolução -->
+<form method="post" action="{% url 'return-book' book.id %}">
+    {% csrf_token %}
+    <label for="return_quantity">Quantidade para Devolução:</label>
+    <input type="number" name="return_quantity" id="return_quantity" min="1" max="{{ book.borrowed }}" required>
+    <button type="submit">Devolver</button>
+</form>
+
+<!-- Exiba a quantidade disponível e emprestada -->
+<h3>Quantidade Disponível: {{ book.stock }}</h3>
+<h3>Quantidade Emprestada: {% if book.borrowed %}{{ book.borrowed }}{% else %}0{% endif %}</h3>
+
 
 </body>
 
 </html>
+
