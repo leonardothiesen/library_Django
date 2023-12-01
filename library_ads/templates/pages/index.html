@@ -47,14 +47,13 @@
                 <td>{{ book.pages }}</td>
                 <td>{{ book.author }}</td>
                 <td>
-                    {% if book.borrowed %}
+                    {% if book.stock == 0 %}
                         Não
-                    {% elif book.stock > 0 %}
-                        Sim
                     {% else %}
-                        Não
+                        Sim
                     {% endif %}
                 </td>
+                
 
             </tr>
             {% endfor %}

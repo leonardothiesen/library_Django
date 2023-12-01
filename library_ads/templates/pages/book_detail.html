@@ -48,7 +48,13 @@
             </tr>
             <tr>
                 <td>Disponível</td>
-                <td>{% if book.borrowed %}Não{% else %}Sim{% endif %}</td>
+                <td>
+                    {% if book.stock == 0 %}
+                        Não
+                    {% else %}
+                        Sim
+                    {% endif %}
+                </td>
             </tr>
 
         </tbody>
