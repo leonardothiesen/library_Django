@@ -50,19 +50,21 @@ def search_book (request):
 
 
 
-def burrow_book(request, book_id):
+
+def burrow_book(request, id):
     if request.method == 'POST':
-        book = Books.objects.get(pk=book_id)
+        book = Books.objects.get(pk=id)  # Alteração aqui, substituindo book_id por id
         borrow_quantity = int(request.POST.get('borrow_quantity', 0))
 
         if borrow_quantity > 0:
             book.borrow(borrow_quantity)
-            return redirect('book_detail', book_id=book_id)
+            return redirect('book_detail', id=id)
         else:
             # Aqui você pode adicionar lógica para lidar com quantidades inválidas, se necessário
             return HttpResponse("Quantidade inválida")
 
     return HttpResponse("Método não permitido")
+
 
 def return_book(request, id):
     book = Books.objects.get(id=id)
@@ -70,16 +72,30 @@ def return_book(request, id):
 
     # Verifique se a quantidade para devolução é válida
     if 1 <= return_quantity <= book.borrowed:
-        book.return_book(return_quantity)
+        book.stock += return_quantity
+        book.borrowed -= return_quantity
+        book.save()
         return redirect('home')
     else:
         # Lógica para lidar com entrada inválida (pode adicionar uma mensagem de erro)
         pass
 
+def return_book(request, id):
+    book = Books.objects.get(id=id)
+    return_quantity = int(request.POST.get('return_quantity', 1))
 
+    # Verifique os valores para depuração
+    print(f"return_quantity: {return_quantity}, borrowed: {book.borrowed}")
 
-
-
+    # Verifique se a quantidade para devolução é válida
+    if 1 <= return_quantity <= book.borrowed:
+        book.stock += return_quantity
+        book.borrowed -= return_quantity
+        book.save()
+        return redirect('home')
+    else:
+        # Lógica para lidar com entrada inválida (pode adicionar uma mensagem de erro)
+        return HttpResponse("Quantidade inválida")
 
 # def burrow_book(request, id):
 #     book = Books.objects.get(id=id)
