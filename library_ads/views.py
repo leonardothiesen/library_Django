@@ -10,7 +10,6 @@ def index (request):
     return render(request, 'pages/index.html', {'books': books})
 
 def book_detail(request, id):
-    print(f"{id}")
     book = Books.objects.get(id=id)
     return render(request, 'pages/book_detail.html', {'book': book})
 
@@ -68,34 +67,28 @@ def burrow_book(request, id):
 
 def return_book(request, id):
     book = Books.objects.get(id=id)
-    return_quantity = int(request.POST.get('return_quantity', 1))
 
-    # Verifique se a quantidade para devolução é válida
-    if 1 <= return_quantity <= book.borrowed:
-        book.stock += return_quantity
-        book.borrowed -= return_quantity
-        book.save()
-        return redirect('home')
+    if request.method == 'POST':
+        return_quantity = int(request.POST.get('return_quantity', 1))
+
+        # Verifique se o formulário é válido
+        form = ReturnBookForm(request.POST)
+        if form.is_valid():
+            # Verifique se a quantidade para devolução é válida
+            if 1 <= return_quantity <= book.borrowed:
+                book.stock += return_quantity
+                book.borrowed -= return_quantity
+                book.save()
+                return redirect('home')
+            else:
+                # Lógica para lidar com entrada inválida (pode adicionar uma mensagem de erro)
+                return HttpResponse("Quantidade inválida")
+        else:
+            # Se o formulário não for válido, você pode adicionar uma lógica para tratamento
+            pass
     else:
-        # Lógica para lidar com entrada inválida (pode adicionar uma mensagem de erro)
+        # Lógica para lidar com solicitações não-POST, se necessário
         pass
-
-def return_book(request, id):
-    book = Books.objects.get(id=id)
-    return_quantity = int(request.POST.get('return_quantity', 1))
-
-    # Verifique os valores para depuração
-    print(f"return_quantity: {return_quantity}, borrowed: {book.borrowed}")
-
-    # Verifique se a quantidade para devolução é válida
-    if 1 <= return_quantity <= book.borrowed:
-        book.stock += return_quantity
-        book.borrowed -= return_quantity
-        book.save()
-        return redirect('home')
-    else:
-        # Lógica para lidar com entrada inválida (pode adicionar uma mensagem de erro)
-        return HttpResponse("Quantidade inválida")
 
 # def burrow_book(request, id):
 #     book = Books.objects.get(id=id)

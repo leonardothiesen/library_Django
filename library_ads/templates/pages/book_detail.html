@@ -42,10 +42,6 @@
                 <td>Autor</td>
                 <td>{{ book.author }}</td>
             </tr>
-            <!-- <tr>
-                <td>Qtde exemplares</td>
-                <td>{{ book.stock }}</td>
-            </tr> -->
             <tr>
                 <td>Data de Registro</td>
                 <td>{{ book.date_register }}</td>
@@ -76,6 +72,7 @@
     <input type="number" name="return_quantity" id="return_quantity" min="1" max="{{ book.borrowed }}" required>
     <button type="submit">Devolver</button>
 </form>
+
 
 <!-- Exiba a quantidade disponível e emprestada -->
 <h3>Quantidade Disponível: {{ book.stock }}</h3>
