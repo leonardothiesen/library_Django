@@ -62,8 +62,6 @@
 
     <br>
 
-
-<!-- Adicione o formulário para empréstimo -->
 <form method="post" action="{% url 'burrow-book' book.id %}">
     {% csrf_token %}
     <label for="borrow_quantity">Quantidade para Empréstimo:</label>
@@ -71,7 +69,6 @@
     <button type="submit">Emprestar</button>
 </form>
 
-<!-- Adicione o formulário para devolução -->
 <form method="post" action="{% url 'return-book' book.id %}">
     {% csrf_token %}
     <label for="return_quantity">Quantidade para Devolução:</label>
@@ -79,8 +76,6 @@
     <button type="submit">Devolver</button>
 </form>
 
-
-<!-- Exiba a quantidade disponível e emprestada -->
 <h3>Quantidade Disponível: {{ book.stock }}</h3>
 <h3>Quantidade Emprestada: {% if book.borrowed %}{{ book.borrowed }}{% else %}0{% endif %}</h3>
 

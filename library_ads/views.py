@@ -54,7 +54,7 @@ def burrow_book(request, id):
 
         if borrow_quantity > 0:
             book.borrow(borrow_quantity)
-            return redirect('book_detail', id=id)
+            return redirect('home')
         else:
             return HttpResponse("Quantidade inválida")
 
@@ -75,7 +75,9 @@ def return_book(request, id):
                 return redirect('home')
             else:
                 return HttpResponse("Quantidade inválida")
-        else:
-            pass
-    else:
-        pass
+
+def borrowed_books(request):
+    users = Usuario.objects.all()
+
+    context = {'users': users}
+    return render(request, 'pages/borrowed_books.html', context)
