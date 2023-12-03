@@ -27,6 +27,7 @@ class Books(models.Model):
     return_date = models.DateTimeField(blank=True, null=True)
     borrowed = models.IntegerField(default=0)
     stock = models.IntegerField() 
+    borrowed_by = models.ManyToManyField(Usuario, through='Borrow', related_name='borrowed_books')
  
     def __str__(self):
         return self.name
@@ -45,8 +46,9 @@ class Books(models.Model):
 class Borrow(models.Model):
     book = models.ForeignKey(Books, on_delete=models.CASCADE)
     user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    borrowed_quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.user.nome_usuario} emprestou {self.book.name}'
+        return f'{self.user.nome_usuario} emprestou {self.borrowed_quantity} cópias de {self.book.name}'
     
 

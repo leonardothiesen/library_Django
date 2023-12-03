@@ -13,17 +13,21 @@
 
 <body style="text-align: center;">
 
-    <h2>Livros Emprestados por Usuário</h2>
 
+
+
+{% block content %}
+    <h2>Livros Emprestados por Usuário</h2>
+ 
     {% for user in users %}
         <h3>{{ user.nome_usuario }}</h3>
         <ul>
-            {% for book in user.borrowed_books.all %}
-                <li>{{ book.name }} - Quantidade: {{ book.borrow.borrowed_quantity }}</li>
+            {% for borrow in user.borrowed_books.all %}
+                <li>{{ borrow.book.name }} - Quantidade: {{ borrow.borrowed_quantity }}</li>
             {% endfor %}
         </ul>
     {% endfor %}
-    {% endblock %}
+ {% endblock %}
 
 </body>
 
